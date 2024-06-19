@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="your.package.StudentController">
+    <children>
+        <TableView fx:id="studentTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="nameColumn" prefWidth="150.0" text="Name" />
+                <TableColumn fx:id="ageColumn" prefWidth="75.0" text="Age" />
+            </columns>
+        </TableView>
+        <Label layoutX="14.0" layoutY="228.0" text="ID:" />
+        <TextField fx:id="idField" layoutX="50.0" layoutY="224.0" />
+        <Label layoutX="200.0" layoutY="228.0" text="Name:" />
+        <TextField fx:id="nameField" layoutX="250.0" layoutY="224.0" />
+        <Label layoutX="400.0" layoutY="228.0" text="Age:" />
+        <TextField fx:id="ageField" layoutX="450.0" layoutY="224.0" />
+        <Button fx:id="addButton" layoutX="50.0" layoutY="264.0" mnemonicParsing="false" text="Add" />
+        <Button fx:id="updateButton" layoutX="150.0" layoutY="264.0" mnemonicParsing="false" text="Update" />
+        <Button fx:id="deleteButton" layoutX="250.0" layoutY="264.0" mnemonicParsing="false" text="Delete" />
+    </children>
+</AnchorPane>

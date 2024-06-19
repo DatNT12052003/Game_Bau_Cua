@@ -1,0 +1,61 @@
+package test_add_student;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class MainApp extends Application {
+
+    private Stage primaryStage;
+    private Scene mainScene;
+    private Scene addStudentScene;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+
+        // Load main view
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/test_add_student/MainView.fxml"));
+        Parent mainView = mainLoader.load();
+        mainScene = new Scene(mainView);
+
+        // Load add student view
+        FXMLLoader addStudentLoader = new FXMLLoader(getClass().getResource("/test_add_student/AddStudentView.fxml"));
+        Parent addStudentView = addStudentLoader.load();
+        addStudentScene = new Scene(addStudentView);
+
+        // Set the initial scene to mainScene
+        primaryStage.setScene(mainScene);
+        primaryStage.setTitle("Main View");
+        primaryStage.show();
+        
+        // Set reference to MainApp in controllers
+        MainViewController mainViewController = mainLoader.getController();
+        mainViewController.setMainApp(this);
+        
+        AddStudentController addStudentController = addStudentLoader.getController();
+        addStudentController.setMainApp(this);
+    }
+
+    // Method to switch to Add Student Scene
+    public void switchToAddStudentScene() {
+        primaryStage.setScene(addStudentScene);
+        primaryStage.setTitle("Add Student");
+    }
+    
+    // Getter for mainScene
+    public Scene getMainScene() {
+        return mainScene;
+    }
+    
+    // Getter for addStudentScene
+    public Scene getAddStudentScene() {
+        return addStudentScene;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

@@ -1,0 +1,19 @@
+package model;
+
+public class Dice {
+	final private String[] diceFace = {"Nai", "Bầu", "Gà", "Cá", "Tôm", "Cua"};
+
+	public String getDiceFace(int i) {
+		return diceFace[i];
+	}
+
+//	public String[] getDiceFace() {
+//		return diceFace;
+//	}
+//
+//	public void setDiceFace(String[] diceFace) {
+//		this.diceFace = diceFace;
+//	}
+//	
+	
+}

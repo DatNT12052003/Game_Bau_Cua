@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="test_add_student.AddStudentController">
+    <TextField fx:id="nameField" promptText="Name"/>
+    <TextField fx:id="ageField" promptText="Age"/>
+    <TextField fx:id="studentIdField" promptText="Student ID"/>
+    <Button text="Add Student" onAction="#handleAddStudent"/>
+    <Button text="Switch to Main View" onAction="#switchToMainView"/>
+</VBox>

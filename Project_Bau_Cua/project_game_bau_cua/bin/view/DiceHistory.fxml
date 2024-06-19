@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HistoryController">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="960.0">
+         <children>
+            <HBox prefHeight="70.0" prefWidth="960.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lịch sử tung xúc xắc" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="330.0" top="15.0" />
+                     </HBox.margin>
+                  </Text>
+               </children></HBox>
+            <ScrollPane prefHeight="580.0" prefWidth="960.0">
+               <content>
+                  <TableView fx:id="diceHistoryTable" prefHeight="570.0" prefWidth="950.0">
+                    <columns>
+                      <TableColumn fx:id="timeDiceColumn" maxWidth="135.0" minWidth="135.0" prefWidth="135.0" text="Thời gian" />
+                      <TableColumn fx:id="faceDice1Column" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="Xúc Xắc 1" />
+                        <TableColumn fx:id="faceDice2Column" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="Xúc Xắc 2" />
+                        <TableColumn fx:id="faceDice3Column" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" text="Xúc Xắc 3" />
+                        <TableColumn fx:id="userBetColumn" maxWidth="558.0" minWidth="440.0" prefWidth="440.0" text="Bạn đã cược" />
+                        <TableColumn fx:id="receiveMoneyColumn" maxWidth="118.0" minWidth="118.0" prefWidth="118.0" text="Tiền nhận được" />
+                    </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+            <HBox prefHeight="70.0" prefWidth="960.0">
+               <children>
+                  <Button fx:id="closeHistory" mnemonicParsing="false" onAction="#closeHistoryAction" prefHeight="40.0" prefWidth="120.0" text="Đóng">
+                     <HBox.margin>
+                        <Insets left="420.0" top="15.0" />
+                     </HBox.margin>
+                  </Button>
+               </children></HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

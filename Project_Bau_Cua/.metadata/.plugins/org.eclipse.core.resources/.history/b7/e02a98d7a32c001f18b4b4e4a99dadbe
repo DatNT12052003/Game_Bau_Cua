@@ -1,0 +1,32 @@
+package test_add_student;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+public class MainViewController {
+
+    @FXML
+    private TableView<Student> studentTable;
+    @FXML
+    private TableColumn<Student, String> nameColumn;
+    @FXML
+    private TableColumn<Student, Integer> ageColumn;
+    @FXML
+    private TableColumn<Student, String> studentIdColumn;
+
+    @FXML
+    private void initialize() {
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        ageColumn.setCellValueFactory(cellData -> cellData.getValue().ageProperty().asObject());
+        studentIdColumn.setCellValueFactory(cellData -> cellData.getValue().studentIdProperty());
+        studentTable.setItems(StudentData.getStudentList());
+    }
+
+    // Method to handle navigation to add student view
+    @FXML
+    private void navigateToAddStudent() {
+        MainApp mainApp = new MainApp();
+        mainApp.switchToAddStudentScene();
+    }
+}

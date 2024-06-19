@@ -1,0 +1,29 @@
+package model;
+
+public class Dice {
+	final private String[] diceFace = {"Nai", "Bầu", "Gà", "Cá", "Tôm", "Cua"};
+
+	public String getDiceFace0() {
+		return diceFace[0];
+	}
+	
+	public String getDiceFace1() {
+		return diceFace[1];
+	}
+	
+	public String getDiceFace2() {
+		return diceFace[2];
+	}
+	
+	public String getDiceFace3() {
+		return diceFace[3];
+	}
+	
+	public String getDiceFace4() {
+		return diceFace[4];
+	}
+	
+	public String getDiceFace5() {
+		return diceFace[5];
+	}
+}

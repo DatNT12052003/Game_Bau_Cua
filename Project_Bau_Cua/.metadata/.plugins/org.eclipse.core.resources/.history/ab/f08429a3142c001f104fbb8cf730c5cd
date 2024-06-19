@@ -1,0 +1,414 @@
+package controller;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
+import javafx.util.Duration;
+import model.BetMoney;
+import model.Dice;
+import model.DiceHistory;
+import model.Person;
+
+public class MainController {
+    private Person person = new Person("Nguyễn Thành Đạt", 1230000);
+    private Dice dice = new Dice();
+    private BetMoney[] betMoneyInGame = new BetMoney[6];
+    private Timeline timeUpdater;
+    
+    private ObservableList<DiceHistory> diceHistoryList = FXCollections.observableArrayList();
+    @FXML
+    private TextField firstDiceTextField;
+    @FXML
+    private TextField secondDiceTextField;
+    @FXML
+    private TextField thirdDiceTextField;
+    @FXML
+    private Text nameText;
+    @FXML
+    private Text moneyText;
+    @FXML
+    private Text countdownTimeText;
+    @FXML
+    private Text presentTimeText;
+    @FXML
+    private Text dayOfWeekText;
+    @FXML
+    private Text naiBetMoneyText;
+    @FXML
+    private Text bauBetMoneyText;
+    @FXML
+    private Text gaBetMoneyText;
+    @FXML
+    private Text caBetMoneyText;
+    @FXML
+    private Text cuaBetMoneyText;
+    @FXML
+    private Text tomBetMoneyText;
+    @FXML
+    private ChoiceBox<String> moneyValueChoiceBox;
+    @FXML
+    private Button naiButton;
+    @FXML
+    private Button bauButton;
+    @FXML
+    private Button gaButton;
+    @FXML
+    private Button caButton;
+    @FXML
+    private Button cuaButton;
+    @FXML
+    private Button tomButton;
+    @FXML
+    private Button cancelBetButton;
+    @FXML
+    private Button historyButton;
+    
+    @FXML
+    private void initialize() {
+        setUser();
+        setPresentTime();
+        setBetMoneyInGame(); // Khởi tạo các đối tượng BetMoney
+        countdownTime();
+        moneyValueChoice();
+        cancelBet();
+ //       showHistory();
+    }
+    
+    //Thêm người dùng vào Game
+    @FXML
+    private void setUser() {
+        nameText.setText(person.getName());
+        moneyText.setText(String.valueOf(person.getMoney()));
+    }
+    
+    
+    //Thêm các trường của tiền cược vào trò chơi
+    @FXML
+    private void setBetMoneyInGame() {
+        for (int i = 0; i < betMoneyInGame.length; i++) {
+            betMoneyInGame[i] = new BetMoney(); // Khởi tạo đối tượng BetMoney
+            betMoneyInGame[i].setBetMoney(0);
+        }
+        betMoneyInGame[0].setName("Nai");
+        betMoneyInGame[1].setName("Bầu");
+        betMoneyInGame[2].setName("Gà");
+        betMoneyInGame[3].setName("Cá");
+        betMoneyInGame[4].setName("Cua");
+        betMoneyInGame[5].setName("Tôm");
+        firstDiceTextField.setEditable(false);
+        secondDiceTextField.setEditable(false);
+        thirdDiceTextField.setEditable(false);
+    }
+
+    //Cài đặt lặp cho các vòng chơi
+    @FXML
+    private void countdownTime() {
+        countdownTimeHelper(Integer.MAX_VALUE);
+    }
+
+ // Cài đặt thời gian đếm ngược
+    private void countdownTimeHelper(final int count) {
+        if (count > 0) {
+            final int[] time = {10};
+            Timeline timeline = new Timeline(
+                new KeyFrame(
+                    Duration.seconds(1),
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            if (time[0] > 0) {
+                                time[0]--;
+                                countdownTimeText.setText(String.valueOf(time[0]));
+                                placeABet();
+                            }
+                        }
+                    }
+                )
+            );
+            timeline.setCycleCount(10);
+            timeline.setOnFinished(event -> {
+                randomDice(() -> {
+                 //   System.out.println(firstDiceTextField.getText() + " " + secondDiceTextField.getText() + " " + thirdDiceTextField.getText());
+                    plusMoney();
+                    countdownTimeHelper(count - 1);
+                });
+            });
+            timeline.play();
+        }
+    }
+
+    // Cài đặt chức năng tung xúc xắc
+    @FXML
+    private void randomDice(Runnable onFinished) {
+        final int[] time = {20};
+        long currentTimeMillis = System.currentTimeMillis();
+        Random random = new Random(currentTimeMillis);
+        
+        Timeline timeline = new Timeline(
+            new KeyFrame(
+                Duration.millis(50),
+                new EventHandler<ActionEvent>() {
+                    int count = 0;
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if (time[0] > 0 && count < 20) {
+                            time[0]--;
+                            firstDiceTextField.setText(dice.getDiceFace(random.nextInt(1000000)%6));
+                            secondDiceTextField.setText(dice.getDiceFace(random.nextInt(1000000)%6));
+                            thirdDiceTextField.setText(dice.getDiceFace(random.nextInt(1000000)%6));
+                            count++;
+                        }
+                    }
+                }
+            )
+        );
+        
+        timeline.setCycleCount(20);
+        timeline.setOnFinished(event -> {
+            setDiceInGame();
+            onFinished.run();
+        });
+        timeline.play();
+    }
+
+    // Cài đặt giá trị cho xúc xắc
+    @FXML
+    private void setDiceInGame() {
+        System.out.println(firstDiceTextField.getText() + " " + secondDiceTextField.getText() + " " + thirdDiceTextField.getText());
+    }
+
+    
+    //Cài đặt hiện thị ngày giờ hiện tại
+    @FXML
+    private void setPresentTime() {
+        timeUpdater = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            LocalDateTime now = LocalDateTime.now();
+            String formattedTime = now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+            presentTimeText.setText(formattedTime);
+            DayOfWeek dayOfWeek = now.getDayOfWeek();
+            dayOfWeekText.setText(convertToVietnamese(dayOfWeek));
+        }));
+        timeUpdater.setCycleCount(Timeline.INDEFINITE);
+        timeUpdater.play();
+    }
+    
+    //Chuyển đổi E -> V
+    private static String convertToVietnamese(DayOfWeek dayOfWeek) {
+        switch (dayOfWeek) {
+            case MONDAY:
+                return "Thứ hai";
+            case TUESDAY:
+                return "Thứ ba";
+            case WEDNESDAY:
+                return "Thứ tư";
+            case THURSDAY:
+                return "Thứ năm";
+            case FRIDAY:
+                return "Thứ sáu";
+            case SATURDAY:
+                return "Thứ bảy";
+            case SUNDAY:
+                return "Chủ nhật";
+            default:
+                return "";
+        }
+    }
+    
+    //Cài đặt chức năng trừ tiền khi đặt cược và hiển thị số tiền đã đặt cược
+    @FXML
+    private void placeABet() {
+        naiButton.setOnAction(event -> {
+            placeABetHelper(naiBetMoneyText);
+        });
+
+        bauButton.setOnAction(event -> {
+            placeABetHelper(bauBetMoneyText);
+        });
+
+        gaButton.setOnAction(event -> {
+            placeABetHelper(gaBetMoneyText);
+        });
+
+        caButton.setOnAction(event -> {
+            placeABetHelper(caBetMoneyText);
+        });
+
+        cuaButton.setOnAction(event -> {
+            placeABetHelper(cuaBetMoneyText);
+        });
+
+        tomButton.setOnAction(event -> {
+            placeABetHelper(tomBetMoneyText);
+        });
+    }
+
+    private void placeABetHelper(Text betMoneyText) {
+        if (Integer.parseInt(moneyValueChoiceBox.getValue()) > person.getMoney()) {
+            setBetButton(true);
+        } else {
+            int betAmount = Integer.parseInt(moneyValueChoiceBox.getValue());
+            person.setMoney(person.getMoney() - betAmount);
+ //           System.out.println("Số tiền của user: " + person.getMoney());
+            int totalBet = betAmount + Integer.parseInt(betMoneyText.getText());
+            betMoneyText.setText(String.valueOf(totalBet));
+            moneyText.setText(String.valueOf(person.getMoney()));
+        }
+    }
+    
+    //Cài đặt mệnh giá cho tiền cược
+    private String moneyValueChoice() {
+        ObservableList<String> options = FXCollections.observableArrayList(
+            "10000", "20000", "50000", "100000", "200000", "500000"
+        );
+        moneyValueChoiceBox.setItems(options);
+        moneyValueChoiceBox.setValue("0");
+        moneyValueChoiceBox.setOnAction(event -> {
+            if (Integer.parseInt(moneyValueChoiceBox.getValue()) < person.getMoney()) {
+                setBetButton(false);
+            } else {
+                setBetButton(true);
+            }
+        });
+        return moneyValueChoiceBox.getValue();
+    }
+
+    //Hàm kiểm tra số tiền của người dùng với mệnh giá đặt cược
+    private void setBetButton(boolean b) {
+        naiButton.setDisable(b);
+        bauButton.setDisable(b);
+        gaButton.setDisable(b);
+        caButton.setDisable(b);
+        tomButton.setDisable(b);
+        cuaButton.setDisable(b);
+    }
+    
+    //Chức năng cộng tiền nếu thắng
+    @FXML
+    private void plusMoney() {
+        saveBetMoney();
+        int moneyWon = plusMoneyHelper();
+        person.setMoney(person.getMoney() + moneyWon * 2);
+        resetBetMoney();
+        setUser();
+    }
+    
+    private int plusMoneyHelper() {
+        int moneyWon = 0;
+        String dice1 = firstDiceTextField.getText();
+        String dice2 = secondDiceTextField.getText();
+        String dice3 = thirdDiceTextField.getText();
+        for (int i = 0; i < 5; i++) {
+            if (dice1.equals(betMoneyInGame[i].getName())) {
+                moneyWon += betMoneyInGame[i].getBetMoney();
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            if (dice2.equals(betMoneyInGame[i].getName())) {
+                moneyWon += betMoneyInGame[i].getBetMoney();
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            if (dice3.equals(betMoneyInGame[i].getName())) {
+                moneyWon += betMoneyInGame[i].getBetMoney();
+            }
+        }
+        return moneyWon;
+    }
+    
+    //Hàm lưu tiền cược vào Đối tượng BetMoney
+    @FXML
+    private void saveBetMoney() {
+        betMoneyInGame[0].setBetMoney(Integer.parseInt(naiBetMoneyText.getText()));
+        betMoneyInGame[1].setBetMoney(Integer.parseInt(bauBetMoneyText.getText()));
+        betMoneyInGame[2].setBetMoney(Integer.parseInt(gaBetMoneyText.getText()));
+        betMoneyInGame[3].setBetMoney(Integer.parseInt(caBetMoneyText.getText()));
+        betMoneyInGame[4].setBetMoney(Integer.parseInt(cuaBetMoneyText.getText()));
+        betMoneyInGame[5].setBetMoney(Integer.parseInt(tomBetMoneyText.getText()));
+    }
+    
+    //Đặt lại tiền đã cược
+    @FXML
+    private void resetBetMoney() {
+        naiBetMoneyText.setText("0");
+        bauBetMoneyText.setText("0");
+        gaBetMoneyText.setText("0");
+        caBetMoneyText.setText("0");
+        cuaBetMoneyText.setText("0");
+        tomBetMoneyText.setText("0");
+    }
+    
+    //Chức năng hủy cược
+    @FXML
+    private void cancelBet() {
+    	cancelBetButton.setOnAction(envent -> {
+    		refund();
+    		resetBetMoney();
+    	});
+    }
+    
+    //Hoàn tiền khi hủy cược
+    @FXML
+    private void refund() {
+    	saveBetMoney();
+    	for (int i=0; i<6; i++) {
+    		person.setMoney(person.getMoney()+betMoneyInGame[i].getBetMoney());
+    	}
+    	setUser();
+    }
+    
+    @FXML
+    private void showHistory() {
+        try {
+            // Tải FXML của màn hình lịch sử
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/History.fxml"));
+            Parent root = loader.load();
+            
+            // Tạo một Stage mới cho màn hình lịch sử
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Lịch sử các lần xúc xắc");
+            stage.initModality(Modality.APPLICATION_MODAL); // Đặt chế độ modal để khóa cửa sổ chính
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //Chức năng lưu lại lịch sử xúc xắc
+    @FXML
+    private void saveDiceHistory() {
+    	LocalDateTime now = LocalDateTime.now();
+        String timeDice = now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+    	String faceDice1 = firstDiceTextField.getText();
+    	String faceDice2 = secondDiceTextField.getText();
+    	String faceDice3 = thirdDiceTextField.getText();
+    	int receiveMoney = ;
+    	(timeDice, faceDice1, faceDice2, faceDice3, receiveMoney);
+    }
+    
+    //Tổng tiền đã cược
+    private int totalBetMoney() {
+    	int total = 0;
+    	for (int i=0; i<6; i++) {
+    		total += betMoneyInGame[i];
+    	}
+    	return total;
+    }
+}

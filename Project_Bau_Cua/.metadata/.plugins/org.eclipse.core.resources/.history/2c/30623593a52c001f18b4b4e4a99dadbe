@@ -1,0 +1,75 @@
+package test_add_student;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+
+public class AddStudentController {
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField ageField;
+    @FXML
+    private TextField studentIdField;
+    @FXML
+    private Button switchToMainViewButton;
+
+    // Reference to MainApp
+    private MainApp mainApp;
+
+    // Set a reference to the MainApp
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    @FXML
+    private void handleAddStudent() {
+        String name = nameField.getText();
+        String ageText = ageField.getText();
+        String studentId = studentIdField.getText();
+
+        if (name.isEmpty() || ageText.isEmpty() || studentId.isEmpty()) {
+            showAlert("Please fill in all fields");
+            return;
+        }
+
+        int age;
+        try {
+            age = Integer.parseInt(ageText);
+        } catch (NumberFormatException e) {
+            showAlert("Age must be a number");
+            return;
+        }
+
+        Student newStudent = new Student(name, age, studentId);
+        StudentData.addStudent(newStudent);
+
+        // Clear the fields for the next entry
+        clearFields();
+
+        // Switch back to main view after adding student
+        mainApp.switchToMainScene();
+    }
+
+    @FXML
+    private void switchToMainView() {
+        mainApp.switchToMainScene();
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void clearFields() {
+        nameField.clear();
+        ageField.clear();
+        studentIdField.clear();
+    }
+}

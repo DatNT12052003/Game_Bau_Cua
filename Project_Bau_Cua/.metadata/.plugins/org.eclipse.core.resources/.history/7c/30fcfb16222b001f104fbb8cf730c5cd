@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * 
+ */
+module project_game_bau_cua {
+	requires javafx.graphics;
+}

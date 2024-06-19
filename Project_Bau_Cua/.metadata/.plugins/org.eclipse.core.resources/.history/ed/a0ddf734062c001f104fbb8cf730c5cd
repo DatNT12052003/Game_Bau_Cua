@@ -1,0 +1,44 @@
+package controller;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.DiceHistory;
+
+public class HistoryController {
+	@FXML
+	private TableView<DiceHistory> diceHistoryTable;
+	@FXML
+	private TableColumn<DiceHistory, String> timeDiceColumn;
+	@FXML
+	private TableColumn<DiceHistory, String> faceDice1Column;
+	@FXML
+	private TableColumn<DiceHistory, String> faceDice2Column;
+	@FXML
+	private TableColumn<DiceHistory, String> faceDice3Column;
+	@FXML
+	private TableColumn<DiceHistory, Integer> receiveMoneyColumn;
+	
+	private ObservableList<DiceHistory> diceHistoryList = FXCollections.observableArrayList();
+	
+	@FXML
+    private void initialize() {
+        // Liên kết các cột với các thuộc tính của DiceHistory
+        timeDiceColumn.setCellValueFactory(new PropertyValueFactory<>("timeDice"));
+        faceDice1Column.setCellValueFactory(new PropertyValueFactory<>("faceDice1"));
+        faceDice2Column.setCellValueFactory(new PropertyValueFactory<>("faceDice2"));
+        faceDice3Column.setCellValueFactory(new PropertyValueFactory<>("faceDice3"));
+        receiveMoneyColumn.setCellValueFactory(new PropertyValueFactory<>("receiveMoney"));
+        
+        // Thêm dữ liệu mẫu
+        diceHistoryList.add(new DiceHistory("10:00", "1", "3", "5", 100));
+        diceHistoryList.add(new DiceHistory("10:05", "2", "4", "6", 200));
+        diceHistoryList.add(new DiceHistory("10:10", "3", "2", "1", 150));
+        
+        // Đưa dữ liệu vào bảng
+        diceHistoryTable.setItems(diceHistoryList);
+    }
+}

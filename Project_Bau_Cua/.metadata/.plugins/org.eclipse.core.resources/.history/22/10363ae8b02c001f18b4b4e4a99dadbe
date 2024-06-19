@@ -1,0 +1,56 @@
+package main;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application{
+	private Stage primaryStage;
+    private Scene mainScene;
+    private Scene diceHistoryScene;
+	
+	public void start (Stage primaryStage) throws Exception{
+		
+		FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml"));
+        Parent mainView = mainLoader.load();
+        mainScene = new Scene(mainView);
+        
+        FXMLLoader diceHistoryLoader = new FXMLLoader(getClass().getResource("/view/History.fxml"));
+        Parent diceHistoryView = diceHistoryLoader.load();
+        diceHistoryScene = new Scene(diceHistoryView);
+        
+     // Set the initial scene to mainScene
+        primaryStage.setScene(mainScene);
+        primaryStage.setTitle("Trò chơi bầu cua");
+        primaryStage.show();
+        
+        public void switchToDiceHistoryScene() {
+            primaryStage.setScene(diceHistoryScene);
+            primaryStage.setTitle("Add Student");
+        }
+        
+        // Getter for mainScene
+        public Scene getMainScene() {
+            return mainScene;
+        }
+        
+        // Getter for addStudentScene
+        public Scene getDiceHistoryScene() {
+            return diceHistoryScene;
+        }
+        
+//		Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
+//		Scene scene = new Scene(root);
+//		primaryStage.setTitle("Trò Chơi Bầu Cua");
+//		primaryStage.setScene(scene);
+//		
+//		
+//		primaryStage.show();
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+}

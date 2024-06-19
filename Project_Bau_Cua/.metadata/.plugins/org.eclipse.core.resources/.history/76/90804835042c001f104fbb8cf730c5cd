@@ -1,0 +1,27 @@
+package controller;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import model.DiceHistory;
+
+public class HistoryController {
+	@FXML
+	private TableView<DiceHistory> diceHistoryTable;
+	@FXML
+	private TableColumn<DiceHistory, String> timeDiceColumn;
+	@FXML
+	private TableColumn<DiceHistory, String> faceDice1Column;
+	@FXML
+	private TableColumn<DiceHistory, String> faceDice2Column;
+	@FXML
+	private TableColumn<DiceHistory, String> faceDice3Column;
+	@FXML
+	private TableColumn<DiceHistory, Integer> receiveMoneyColumn;
+	
+	private ObservableList<DiceHistory> studentList = FXCollections.observableArrayList();
+	
+	
+}

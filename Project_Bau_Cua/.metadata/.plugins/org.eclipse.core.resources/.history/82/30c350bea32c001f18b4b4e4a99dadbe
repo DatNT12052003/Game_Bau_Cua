@@ -1,0 +1,36 @@
+package test_add_student;
+
+//MainApp.java
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class MainApp extends Application {
+
+ @Override
+ public void start(Stage primaryStage) throws Exception {
+     try {
+         // Load main view
+         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/test_add_student/MainView.fxml"));
+         Parent mainView = mainLoader.load();
+         Scene mainScene = new Scene(mainView);
+
+         // Load add student view
+         FXMLLoader addStudentLoader = new FXMLLoader(getClass().getResource("/test_add_student/AddStudentView.fxml"));
+         Parent addStudentView = addStudentLoader.load();
+         Scene addStudentScene = new Scene(addStudentView);
+
+         primaryStage.setScene(addStudentScene); // Start with addStudentScene
+         primaryStage.setTitle("Add Student");
+         primaryStage.show();
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
+ }
+
+ public static void main(String[] args) {
+     launch(args);
+ }
+}

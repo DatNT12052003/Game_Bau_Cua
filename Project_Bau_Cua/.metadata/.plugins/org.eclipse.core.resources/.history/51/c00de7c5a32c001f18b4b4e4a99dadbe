@@ -1,0 +1,27 @@
+package test_add_student;
+
+//MainViewController.java
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class MainViewController {
+
+ @FXML
+ private TableView<Student> studentTable;
+ @FXML
+ private TableColumn<Student, String> nameColumn;
+ @FXML
+ private TableColumn<Student, Integer> ageColumn;
+ @FXML
+ private TableColumn<Student, String> studentIdColumn;
+
+ @FXML
+ private void initialize() {
+     nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+     ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+     studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("studentId"));
+     studentTable.setItems(StudentData.getStudentList());
+ }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="test_add_student.controllers.MainViewController">
+    <TableView fx:id="studentTable">
+        <columns>
+            <TableColumn text="Name" fx:id="nameColumn"/>
+            <TableColumn text="Age" fx:id="ageColumn"/>
+            <TableColumn text="Student ID" fx:id="studentIdColumn"/>
+        </columns>
+    </TableView>
+    <Button text="Add Student" onAction="#navigateToAddStudent"/>
+</VBox>
